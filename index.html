@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Podcast</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #eee;
+            padding: 2rem;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .country-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .country-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .country-card:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+        .country-card.active {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.2);
+        }
+        .country-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .country-date {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        .player-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .player-title {
+            font-size: 1.5rem;
+        }
+        .player-duration {
+            color: #888;
+        }
+        audio {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+        .map-container {
+            text-align: center;
+        }
+        .map-container img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .placeholder {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        .placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .region-header {
+            font-size: 1.1rem;
+            color: #4CAF50;
+            margin: 1.5rem 0 0.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>🌍 Country Podcast</h1>
+    <p class="subtitle">One country per day — History, politics, and regional context</p>
+
+    <div class="container">
+        <div class="country-list">
+            <div class="region-header">Europe</div>
+
+            <div class="country-card active" data-country="switzerland" data-date="March 15, 2026" data-duration="9:09">
+                <div class="country-name">🇨🇭 Switzerland</div>
+                <div class="country-date">March 15, 2026</div>
+            </div>
+
+            <!-- Add more countries here as they're created -->
+
+        </div>
+
+        <div class="player-section" id="player-section">
+            <div class="player-header">
+                <div class="player-title" id="player-title">🇨🇭 Switzerland</div>
+                <div class="player-duration" id="player-duration">9:09</div>
+            </div>
+            <audio id="audio-player" controls>
+                <source src="audio/2026/03/switzerland.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="map-container">
+                <img id="map-image" src="maps/2026/03/switzerland-map.png" alt="Map of Switzerland">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const countryCards = document.querySelectorAll('.country-card');
+        const audioPlayer = document.getElementById('audio-player');
+        const mapImage = document.getElementById('map-image');
+        const playerTitle = document.getElementById('player-title');
+        const playerDuration = document.getElementById('player-duration');
+
+        countryCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove active class from all cards
+                countryCards.forEach(c => c.classList.remove('active'));
+                // Add active class to clicked card
+                card.classList.add('active');
+
+                // Update player
+                const country = card.dataset.country;
+                const date = card.dataset.date;
+                const duration = card.dataset.duration;
+                const flag = card.querySelector('.country-name').textContent.split(' ')[0];
+
+                playerTitle.textContent = card.querySelector('.country-name').textContent;
+                playerDuration.textContent = duration;
+
+                // Update audio source
+                audioPlayer.src = `audio/2026/03/${country}.mp3`;
+                audioPlayer.load();
+
+                // Update map
+                mapImage.src = `maps/2026/03/${country}-map.png`;
+                mapImage.alt = `Map of ${country.charAt(0).toUpperCase() + country.slice(1)}`;
+            });
+        });
+    </script>
+</body>
+</html>
